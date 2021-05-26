@@ -19,6 +19,7 @@ This function will create and insert/append the elements needed to display a "pa
 */
 const perPage = 9;
 const studentList = document.querySelector('.student-list');
+const linkList = document.querySelector('.link-list');
 
 
 function showPage(list, page) {
@@ -50,7 +51,30 @@ function showPage(list, page) {
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
+function addPagination (list) {
+  const numOfPages = Math.ceil(list.length / perPage);
+  linkList.innerHTML = '';
+  for (let i = 1; i <= numOfPages; i++) {
+    const newButton =
+    `<li>
+      <button type="button">${i}</button>
+    </li>`
+    linkList.insertAdjacentHTML('beforeend', newButton);
+  }
+  const buttonClass = document.querySelector('.link-list button');
+  buttonClass.className = 'active';
 
-
+  linkList.addEventListener('click', (e) => {
+    const clickButton = e.target;
+    if (clickButton.tagName === 'BUTTON') {
+      const firstActiveButton = document.querySelector('button.active');
+      firstActiveButton.classList.remove('active');
+      clickButton.className = 'active';
+      showPage(list, clickButton.textContent)
+    }
+  });
+}
 
 // Call functions
+showPage(data, 1)
+addPagination(data);
