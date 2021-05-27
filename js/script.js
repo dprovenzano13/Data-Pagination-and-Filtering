@@ -20,9 +20,11 @@ This function will create and insert/append the elements needed to display a "pa
 const perPage = 9;
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
+const header = document.querySelector('.header');
 
 
-function showPage(list, page) {
+
+function showPage(list, page = 1) {
   const startIndex = (page * perPage) - perPage;
   const endIndex = (page * perPage);
   studentList.innerHTML = '';
@@ -45,18 +47,16 @@ function showPage(list, page) {
     }
   }
 }
-
-
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
-function addPagination (list) {
+function addPagination(list) {
   const numOfPages = Math.ceil(list.length / perPage);
   linkList.innerHTML = '';
   for (let i = 1; i <= numOfPages; i++) {
     const newButton =
-    `<li>
+      `<li>
       <button type="button">${i}</button>
     </li>`
     linkList.insertAdjacentHTML('beforeend', newButton);
@@ -75,6 +75,33 @@ function addPagination (list) {
   });
 }
 
+// Add a search bar
+const addSearchBar =
+  `<label for="search" class="student-search">
+    <span>Search by name</span>
+    <input id="search" placeholder="Search by name...">
+    <button type="submit"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>`
+
+header.insertAdjacentHTML('beforeend', addSearchBar);
+
+const input = document.querySelector('#search');
+
+function filterSearch(searchInput, list) {
+  const searchList = [];
+    for (let i = 0; i < list.length; i++) {
+      const names = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`
+        if(names.includes(searchInput)) {
+          searchList.push(list[i])
+        }
+    return searchList;
+  }
+}
+
+input.addEventListener('keyup', ()=> {
+  // filterSearch(input, data);
+})
+
 // Call functions
-showPage(data, 1)
+showPage(data, 1);
 addPagination(data);
