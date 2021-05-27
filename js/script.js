@@ -85,21 +85,26 @@ const addSearchBar =
 
 header.insertAdjacentHTML('beforeend', addSearchBar);
 
-const input = document.querySelector('#search');
+const searchInput = document.querySelector('.student-search');
+const searchButton = document.querySelector('button');
 
-function filterSearch(searchInput, list) {
+function filterSearch(list) {
+  const studentInput = document.querySelector('#search').value.toLowerCase();
   const searchList = [];
     for (let i = 0; i < list.length; i++) {
-      const names = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`
-        if(names.includes(searchInput)) {
-          searchList.push(list[i])
+      let names = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`
+        if(names.includes(studentInput)) {
+          searchList.push(list[i]);
         }
-    return searchList;
   }
+  return searchList;
 }
 
-input.addEventListener('keyup', ()=> {
-  // filterSearch(input, data);
+searchButton.addEventListener('click', ()=> {
+  console.log('button works')
+})
+searchInput.addEventListener('keyup', ()=> {
+  console.log(filterSearch(data));
 })
 
 // Call functions
