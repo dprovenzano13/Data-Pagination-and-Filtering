@@ -30,7 +30,6 @@ function showPage(list, page = 1) {
   studentList.innerHTML = '';
 
   for (let i = 0; i < list.length; i++) {
-
     if (i >= startIndex && i < endIndex) {
       const studentItem =
       `<li class="student-item cf">
@@ -46,6 +45,7 @@ function showPage(list, page = 1) {
       studentList.insertAdjacentHTML('beforeend', studentItem);
     }
   }
+  addPagination(list);
 }
 /*
 Create the `addPagination` function
@@ -91,22 +91,32 @@ const searchButton = document.querySelector('button');
 function filterSearch(list) {
   const studentInput = document.querySelector('#search').value.toLowerCase();
   const searchList = [];
-    for (let i = 0; i < list.length; i++) {
-      let names = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`
-        if(names.includes(studentInput)) {
-          searchList.push(list[i]);
-        }
+  for (let i = 0; i < list.length; i++) {
+    let names = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`
+    if(names.includes(studentInput)) {
+      searchList.push(list[i]);
+    }
   }
-  return searchList;
+  if (searchList.length === 0) {
+    alert('This doesnt exist');
+    document.querySelector('#search').value = '';
+    showPage(data, 1)
+  } else {
+    return showPage(searchList, 1)
+  }
 }
 
-searchButton.addEventListener('click', ()=> {
-  console.log('button works')
-})
-searchInput.addEventListener('keyup', ()=> {
+searchButton.addEventListener('click', (e) => {
+  e.preventDefault();
   console.log(filterSearch(data));
+})
+searchInput.addEventListener('keyup', (e) => {
+  e.preventDefault();
+  filterSearch(data);
+  // showPage(filterSearch(data), 1);
+  // addPagination(filterSearch(data));
+
 })
 
 // Call functions
 showPage(data, 1);
-addPagination(data);
