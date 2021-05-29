@@ -71,14 +71,20 @@ const searchInput = document.querySelector('.student-search');
 const searchButton = document.querySelector('button');
 
 function alertMessage() {
-  const message =
-  `<div class="message">
-      <h3>No results found</h3>
-  </div>`
-  header.insertBefore(searchInput, div)
-  const div = document.querySelector('.message');
-  div.style.color = 'grey';
-  div.style.fontSize = '2em';
+  const alertMessage = document.createElement('div');
+    alertMessage.className = 'alertMessage';
+    alertMessage.textContent = 'NO RESULTS FOUND'
+    alertMessage.style.color = '#1e90ff';
+    alertMessage.style.fontSize = '1em';
+    alertMessage.style.margin = 'auto';
+  header.insertBefore(alertMessage, searchInput)
+}
+
+function removeAlert() {
+  const alertMessage = document.querySelector('.alertMessage');
+  if (alertMessage) {
+    header.removeChild(alertMessage);
+  }
 }
 
 function filterSearch(list) {
@@ -92,13 +98,13 @@ function filterSearch(list) {
   }
   if (searchList.length === 0) {
     alertMessage();
-    // document.querySelector('#search').value = '';
+    showPage(list, 1)
   } else {
-    showPage(searchList, 1);
 
-    // addPagination(searchList);
+    showPage(searchList, 1);
+    addPagination(searchList);
+      removeAlert();
   }
-  // showPage(searchList, 1)
 }
 
 searchButton.addEventListener('click', (e) => {
@@ -106,7 +112,7 @@ searchButton.addEventListener('click', (e) => {
   console.log(filterSearch(data));
 })
 searchInput.addEventListener('keyup', (e) => {
-  // e.preventDefault();
+  e.preventDefault();
   filterSearch(data);
 })
 
