@@ -5,30 +5,16 @@ FSJS Project 2 - Data Pagination and Filtering
 
 
 
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
 
-// console.log(data);
-
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
 const perPage = 9;
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
 const header = document.querySelector('.header');
 
-
-
 function showPage(list, page = 1) {
   const startIndex = (page * perPage) - perPage;
   const endIndex = (page * perPage);
   studentList.innerHTML = '';
-
   for (let i = 0; i < list.length; i++) {
     if (i >= startIndex && i < endIndex) {
       const studentItem =
@@ -45,23 +31,20 @@ function showPage(list, page = 1) {
       studentList.insertAdjacentHTML('beforeend', studentItem);
     }
   }
-  addPagination(list);
+// addPagination(list);
 }
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+
 function addPagination(list) {
   const numOfPages = Math.ceil(list.length / perPage);
   linkList.innerHTML = '';
   for (let i = 1; i <= numOfPages; i++) {
     const newButton =
       `<li>
-      <button type="button">${i}</button>
+      <button id="pagButton" type="button">${i}</button>
     </li>`
     linkList.insertAdjacentHTML('beforeend', newButton);
   }
-  const buttonClass = document.querySelector('.link-list button');
+  const buttonClass = document.querySelector('#pagButton');
   buttonClass.className = 'active';
 
   linkList.addEventListener('click', (e) => {
@@ -74,8 +57,7 @@ function addPagination(list) {
     }
   });
 }
-
-// Add a search bar
+// Added a search bar
 const addSearchBar =
   `<label for="search" class="student-search">
     <span>Search by name</span>
@@ -88,6 +70,17 @@ header.insertAdjacentHTML('beforeend', addSearchBar);
 const searchInput = document.querySelector('.student-search');
 const searchButton = document.querySelector('button');
 
+function alertMessage() {
+  const message =
+  `<div class="message">
+      <h3>No results found</h3>
+  </div>`
+  header.insertBefore(searchInput, div)
+  const div = document.querySelector('.message');
+  div.style.color = 'grey';
+  div.style.fontSize = '2em';
+}
+
 function filterSearch(list) {
   const studentInput = document.querySelector('#search').value.toLowerCase();
   const searchList = [];
@@ -98,12 +91,14 @@ function filterSearch(list) {
     }
   }
   if (searchList.length === 0) {
-    alert('This doesnt exist');
-    document.querySelector('#search').value = '';
-    showPage(data, 1)
+    alertMessage();
+    // document.querySelector('#search').value = '';
   } else {
-    return showPage(searchList, 1)
+    showPage(searchList, 1);
+
+    // addPagination(searchList);
   }
+  // showPage(searchList, 1)
 }
 
 searchButton.addEventListener('click', (e) => {
@@ -111,12 +106,10 @@ searchButton.addEventListener('click', (e) => {
   console.log(filterSearch(data));
 })
 searchInput.addEventListener('keyup', (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   filterSearch(data);
-  // showPage(filterSearch(data), 1);
-  // addPagination(filterSearch(data));
-
 })
 
 // Call functions
 showPage(data, 1);
+addPagination(data);
