@@ -3,14 +3,15 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
-
-
-
+// Initial golbal variables
 const perPage = 9;
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
 const header = document.querySelector('.header');
-
+/*
+ * Dynamically inserts 9 students per page.
+ * It will create as many pages needed to fit the amount of students there are
+ */
 function showPage(list, page = 1) {
   const startIndex = (page * perPage) - perPage;
   const endIndex = (page * perPage);
@@ -33,7 +34,7 @@ function showPage(list, page = 1) {
   }
 // addPagination(list);
 }
-
+// Decides how many buttons are needed based off of how many found searches there are.
 function addPagination(list) {
   const numOfPages = Math.ceil(list.length / perPage);
   linkList.innerHTML = '';
@@ -46,7 +47,10 @@ function addPagination(list) {
   }
   const buttonClass = document.querySelector('#pagButton');
   buttonClass.className = 'active';
-
+/*
+ * Listens for button clicks at the bottom of the page and changes the class to
+ * 'active' each time a button is clicked.
+ */
   linkList.addEventListener('click', (e) => {
     const clickButton = e.target;
     if (clickButton.tagName === 'BUTTON') {
@@ -64,12 +68,12 @@ const addSearchBar =
     <input id="search" placeholder="Search by name...">
     <button type="submit"><img src="img/icn-search.svg" alt="Search icon"></button>
   </label>`
-
+// Dynamically inserts the search bar into the HTML file.
 header.insertAdjacentHTML('beforeend', addSearchBar);
-
+// Global variables declared after the search form is inserted to the HTML.
 const searchInput = document.querySelector('.student-search');
 const searchButton = document.querySelector('button');
-
+// Creates an alert message that will be called in the filterSearch function.
 function alertMessage() {
   const alertMessage = document.createElement('div');
     alertMessage.className = 'alertMessage';
@@ -79,14 +83,17 @@ function alertMessage() {
     alertMessage.style.margin = 'auto';
   header.insertBefore(alertMessage, searchInput)
 }
-
+// Removes the alert message.
 function removeAlert() {
   const alertMessage = document.querySelector('.alertMessage');
   if (alertMessage) {
     header.removeChild(alertMessage);
   }
 }
-
+/*
+ * Filters through the data.js file and pushes names into an empty array if
+ * the users input matches the first and last name of the data information.
+*/
 function filterSearch(list) {
   const studentInput = document.querySelector('#search').value.toLowerCase();
   const searchList = [];
@@ -96,21 +103,26 @@ function filterSearch(list) {
       searchList.push(list[i]);
     }
   }
+/*
+ * Decides that if the searchList array is empty, it will run an alertMessage
+ * If the array is not emtpy it will show the amount of found searches, show
+ * how many pages are needed, and removes the alertMessage
+*/
   if (searchList.length === 0) {
     alertMessage();
-    showPage(list, 1)
+    showPage(list, 1);
   } else {
-
     showPage(searchList, 1);
     addPagination(searchList);
-      removeAlert();
+    removeAlert();
   }
 }
-
+// Listens for the search bar button to be clicked and runs the filterSearch function
 searchButton.addEventListener('click', (e) => {
   e.preventDefault();
-  console.log(filterSearch(data));
+  filterSearch(data);
 })
+// Listens for the search bar input to be typed into and runs the filterSearch function
 searchInput.addEventListener('keyup', (e) => {
   e.preventDefault();
   filterSearch(data);
