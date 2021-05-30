@@ -18,23 +18,26 @@ function showPage(list, page = 1) {
   studentList.innerHTML = '';
   for (let i = 0; i < list.length; i++) {
     if (i >= startIndex && i < endIndex) {
-      const studentItem =
-      `<li class="student-item cf">
-        <div class="student-details">
-          <img class="avatar" src="${list[i].picture.large}" alt="Profile Picture">
-          <h3>${list[i].name.first} ${list[i].name.last}</h3>
-          <span class="email">${list[i].email}</span>
-        </div>
-        <div class="joined-details">
-          <span class="date">Joined ${list[i].registered.date}</span>
-        </div>
-      </li>`;
-      studentList.insertAdjacentHTML('beforeend', studentItem);
+    const studentItem =
+    `<li class="student-item cf">
+      <div class="student-details">
+        <img class="avatar" src="${list[i].picture.large}" alt="Profile Picture">
+        <h3>${list[i].name.first} ${list[i].name.last}</h3>
+        <span class="email">${list[i].email}</span>
+      </div>
+      <div class="joined-details">
+        <span class="date">Joined ${list[i].registered.date}</span>
+      </div>
+    </li>`;
+    studentList.insertAdjacentHTML('beforeend', studentItem);
     }
   }
 // addPagination(list);
 }
-// Decides how many buttons are needed based off of how many found searches there are.
+/*
+ * Decides how many buttons are needed based off of how many search results
+ * are found.
+ */
 function addPagination(list) {
   const numOfPages = Math.ceil(list.length / perPage);
   linkList.innerHTML = '';
@@ -73,21 +76,26 @@ header.insertAdjacentHTML('beforeend', addSearchBar);
 // Global variables declared after the search form is inserted to the HTML.
 const searchInput = document.querySelector('.student-search');
 const searchButton = document.querySelector('button');
-// Creates an alert message that will be called in the filterSearch function.
-function alertMessage() {
-  const alertMessage = document.createElement('div');
-    alertMessage.className = 'alertMessage';
-    alertMessage.textContent = 'NO RESULTS FOUND'
-    alertMessage.style.color = '#1e90ff';
-    alertMessage.style.fontSize = '1em';
-    alertMessage.style.margin = 'auto';
-  header.insertBefore(alertMessage, searchInput)
+/*
+ * Creates an alert message that sits within a 'div' element and inserts
+ * it into HTML file.
+ */
+const alertMessage = document.createElement('div');
+  alertMessage.className = 'alertMessage';
+  alertMessage.style.color = '#1e90ff';
+  alertMessage.style.fontSize = '1em';
+  alertMessage.style.margin = 'auto';
+  header.insertBefore(alertMessage, searchInput);
+// Changes the innerHTML of the
+function addAlertMessage() {
+  const message = document.querySelector('.alertMessage');
+  message.innerHTML = 'NO RESULTS FOUND';
 }
 // Removes the alert message.
 function removeAlert() {
-  const alertMessage = document.querySelector('.alertMessage');
-  if (alertMessage) {
-    header.removeChild(alertMessage);
+  const message = document.querySelector('.alertMessage');
+  if (message) {
+    message.innerHTML = '';
   }
 }
 /*
@@ -109,8 +117,7 @@ function filterSearch(list) {
  * how many pages are needed, and removes the alertMessage
 */
   if (searchList.length === 0) {
-    alertMessage();
-    showPage(list, 1);
+    addAlertMessage();
   } else {
     showPage(searchList, 1);
     addPagination(searchList);
@@ -124,7 +131,6 @@ searchButton.addEventListener('click', (e) => {
 })
 // Listens for the search bar input to be typed into and runs the filterSearch function
 searchInput.addEventListener('keyup', (e) => {
-  e.preventDefault();
   filterSearch(data);
 })
 
