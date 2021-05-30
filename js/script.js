@@ -118,6 +118,8 @@ function filterSearch(list) {
 */
   if (searchList.length === 0) {
     addAlertMessage();
+    showPage(searchList, 1);
+    addPagination(searchList);
   } else {
     showPage(searchList, 1);
     addPagination(searchList);
